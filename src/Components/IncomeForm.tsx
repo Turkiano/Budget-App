@@ -1,4 +1,10 @@
-import { Button } from "./Button";
+
+import { TextField } from '@mui/material';
+import Button from '@mui/material/Button';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+
 
 //here to receive the props from the App.tsx component
 export function IncomeForm({handelChageSource, hadelChangeAmount, hadelChangeDate, handeleSubmit} : any) {
@@ -7,24 +13,26 @@ export function IncomeForm({handelChageSource, hadelChangeAmount, hadelChangeDat
 
     <form onSubmit={handeleSubmit}>
         <div>
-        <label htmlFor="resource">Income Source</label>
-        <input type='text' name='resource' id ='resource' placeholder='What is the source?'
-        onChange={handelChageSource}/>  {/* // apply the props using the fuction onChange  */}
+        <TextField name='resource' id ='resource' label='What is the source?' variant="outlined"  placeholder='What is the source?'
+        onChange={handelChageSource}/>
         </div>
 
 
         <div>
-        <label htmlFor="amount">Income Amount</label>
-        <input type='text' name='amount' id ='amount' placeholder='How much ?' onChange={hadelChangeAmount}/>
+        <TextField name='amount' id ='amount' label='How much ?' variant="outlined"  placeholder='How much ?'
+       onChange={hadelChangeAmount}/>
         </div>
 
 
         <div>
-        <label htmlFor="date">Date</label>
-        <input type='date' name='date' id ='date' placeholder='Type the date here' onChange={hadelChangeDate}/>
-        </div>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateTimePicker onChange={hadelChangeDate}/>
+       </LocalizationProvider>
+      
+       </div>
 
-        <Button label= 'add income' />
+        <Button variant="contained" type='submit'>Add income</Button>
+
     </form>
     )
 }
