@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { IncomeForm } from "./IncomeForm"
-import { Dayjs } from "dayjs"
 
 
 type Income = {
@@ -8,34 +7,40 @@ type Income = {
     amount: number,
     date: string
   }
-  
-export function IncomeWrapper () {
+
+  type IncomeWrapperProps = {
+    titleSection: string
+  }
+export function IncomeWrapper ({titleSection}: IncomeWrapperProps) {
     const [incomes, setIncomes] = useState<Income[]>([])
 
-    const [source, setSource] = useState('')
-    const [amount, setAmount] = useState('')
-    const [date, setDate] = useState('')
-  
+    // const [source, setSource] = useState('')
+    // const [amount, setAmount] = useState('')
+    // const [date, setDate] = useState('')
+    const [input, setInput] = useState<Income>({ source: "", amount: 0, date: "", });
   
   //Here to declare the variables, using arrow function
     const handelChangeSource = (e:any) => {
-      let source = e.target.value; 
+      let inpuSource = e.target.value; 
   
-      setSource(source)
+      // setSource(source)
+      setInput({ ...input, source : inpuSource, });
      
     }
     
     const hadelChangeAmount = (e:any) => {
   
-      let amount = e.target.value;
+      let inputAmount = e.target.value;
   
-      setAmount(amount)
-  
+
+      setInput({ ...input, amount : inputAmount, });
+      
     }
     
     const handleChangeDate = (value: {$d: Date}) => {
       
-        setDate( new Date(value.$d).toLocaleDateString())
+        // setDate( new Date(value.$d).toLocaleDateString())
+        setInput({ ...input, date : new Date(value.$d).toLocaleDateString(), });
       
     }
     // const hadelChangeDate = (e:any) => {
@@ -52,21 +57,22 @@ export function IncomeWrapper () {
       console.log("testing handle submit")
   
       let newIncome = {
-        source:source,
-        amount:amount,
-        date:date 
+        source:input.source,
+        amount:input.amount,
+        date:input.date 
   
       }
 
       setIncomes([...incomes, newIncome])
-
       console.log(newIncome);
       }
 
       return (
         <>
        
-        <IncomeForm handelChageSource={handelChangeSource} hadelChangeAmount = {hadelChangeAmount} hadelChangeDate={handleChangeDate} handeleSubmit={handeleSubmit}/>
+       <h3>{titleSection}</h3>
+
+        <IncomeForm buttonSection={titleSection} handelChageSource={handelChangeSource} hadelChangeAmount = {hadelChangeAmount} hadelChangeDate={handleChangeDate} handeleSubmit={handeleSubmit}/>
 
         {/* <Demo></Demo> button example */}
     
