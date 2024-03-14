@@ -1,95 +1,102 @@
-import { useState } from "react"
-import { IncomeForm } from "./IncomeForm"
+import { ChangeEvent, FormEvent, useState } from "react";
+import { Dayjs } from "dayjs";
 
+import { IncomeForm } from "./IncomeForm";
+
+import { formData } from "../App";
 
 type Income = {
-    source: string,
-    amount: number,
-    date: string
-  }
+  id: number;
+  source: string;
+  amount: number;
+  date: string;
+};
 
-  type IncomeWrapperProps = {
-    titleSection: string
-  }
-export function IncomeWrapper ({titleSection}: IncomeWrapperProps) {
-    const [incomes, setIncomes] = useState<Income[]>([])
+type IncomeWrapperProps = {
+  titleSection: string;
+  inputs: formData[];
+};
+export function IncomeWrapper({ titleSection, inputs }: IncomeWrapperProps) {
+  const [incomes, setIncomes] = useState<Income[]>([]);
+  console.log(incomes);
 
-    // const [source, setSource] = useState('')
-    // const [amount, setAmount] = useState('')
-    // const [date, setDate] = useState('')
-    const [input, setInput] = useState<Income>({ source: "", amount: 0, date: "", });
-  
+  // const [source, setSource] = useState('')
+  // const [amount, setAmount] = useState('')
+  // const [date, setDate] = useState('')
+  const [input, setInput] = useState<Income>({
+    id: +new Date(),
+    source: "",
+    amount: 0,
+    date: "",
+  });
+
   //Here to declare the variables, using arrow function
-    const handelChangeSource = (e:any) => {
-      let inpuSource = e.target.value; 
-  
+  const handelChange = (e: any) => {
+    if (e.target) {
+      let inpuSource = e.target.value;
+      const name = e.target.name;
+
       // setSource(source)
-      setInput({ ...input, source : inpuSource, });
-     
+      setInput({ ...input, [name]: inpuSource });
+    } else {
+      setInput({ ...input, date: e.toDate().toLocaleDateString() });
     }
-    
-    const hadelChangeAmount = (e:any) => {
-  
-      let inputAmount = e.target.value;
-  
+  };
 
-      setInput({ ...input, amount : inputAmount, });
-      
-    }
-    
-    const handleChangeDate = (value: {$d: Date}) => {
-      
-        // setDate( new Date(value.$d).toLocaleDateString())
-        setInput({ ...input, date : new Date(value.$d).toLocaleDateString(), });
-      
-    }
-    // const hadelChangeDate = (e:any) => {
-    //   let date = e.target.value;
-    //   // let name = e.target.name; 
-    //   // console.log("name ", name)
-    //   console.log(date);
-      
-    //   setDate(date)
-  
-    // }
-    const handeleSubmit = (e : any) => {
-      e.preventDefault()
-      console.log("testing handle submit")
-  
-      let newIncome = {
-        source:input.source,
-        amount:input.amount,
-        date:input.date 
-  
-      }
+  // const hadelChangeAmount = (e: any) => {
+  //   let inputAmount = e.target.value;
 
-      setIncomes([...incomes, newIncome])
-      console.log(newIncome);
-      }
+  //   setInput({ ...input, amount: inputAmount });
+  // };
 
-      return (
-        <>
-       
-       <h3>{titleSection}</h3>
+  // const handleChangeDate = (value: Dayjs | null) => {
+  //   if (value) {
+  //     setInput({ ...input, date: value.toDate().toLocaleDateString() });
+  //   }
+  // };
 
-        <IncomeForm buttonSection={titleSection} handelChageSource={handelChangeSource} hadelChangeAmount = {hadelChangeAmount} hadelChangeDate={handleChangeDate} handeleSubmit={handeleSubmit}/>
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    // console.log("testing handle submit");
 
-        {/* <Demo></Demo> button example */}
-    
-        {/* this line to print the html elements (newIncome) */}
-        <ul>
-          {incomes.map((income) => {
-            return (
-              <li>
-                <p>{income.source}</p>
-                <p>{income.amount}</p>
-                <p>{income.date}</p>
-              </li>
-            )
-           })
-          }
-        </ul>
-        </>
-      )
-       
+    let newIncome = {
+      id: +new Date(),
+      source: input.source,
+      amount: +input.amount,
+      date: input.date,
+    };
+
+    setIncomes([...incomes, newIncome]);
+  };
+
+  return (
+    <>
+      <h3>{titleSection}</h3>
+
+      <IncomeForm
+        inputs={inputs}
+        buttonSection={titleSection}
+        // handelChageSource={handelChangeSource}
+        // hadelChangeAmount={hadelChangeAmount}
+        handelChange={handelChange}
+        // handleChangeDate={handleChangeDate}
+        handleSubmit={handleSubmit}
+      />
+
+      {/* <Demo></Demo> button example */}
+
+      {/* this line to print the html elements (newIncome) */}
+      <ul>
+        {incomes.map((income) => {
+          return (
+            <li key={income.id}>
+              <p>{income.source}</p>
+              <p>{income.amount}</p>
+              <p>{income.date}</p>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
 }

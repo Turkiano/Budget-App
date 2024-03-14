@@ -1,38 +1,55 @@
+import { Grid } from "@mui/material";
+import "./App.css";
 
-import { Grid } from '@mui/material';
-import './App.css';
-import { IncomeWrapper } from './Components/IncomeWrapper';
+import { IncomeWrapper } from "./Components/IncomeWrapper";
 
+
+export type formData = {
+  name: string;
+  id: string;
+  label: string;
+};
+const INCOME_INPUTS: formData[] = [
+  {
+    name: "source",
+    id: "source",
+    label: "Income Source",
+  },
+  {
+    name: "amount",
+    id: "amount",
+    label: "Income Amount",
+  },
+];
+const EXPENSE_INPUTS = [
+  {
+    name: "source",
+    id: "source",
+    label: "Expense Source",
+  },
+  {
+    name: "amount",
+    id: "amount",
+    label: "Expense Amount",
+  },
+];
 function App() {
-
-const test = [1, 2, 3, 4, 5]
-const test2 = [...test, 6, 7 ]
-
-console.log(test);
-
   return (
     <div className="App">
-     <h1>Budget App</h1>
-     <Grid container justifyContent="space-around">
-     <Grid item spacing={3} xs={3}>
-     <IncomeWrapper titleSection = "Income"   />
-         
+      <h1>Budget App</h1>
+      <Grid container justifyContent="space-around">
+        <Grid item xs={12} md={3}>
+          <IncomeWrapper titleSection="Income" inputs={INCOME_INPUTS} />
         </Grid>
-        <Grid item spacing={3} xs={3}>
-        <IncomeWrapper titleSection = "Expense" />
-          
+        <Grid item xs={12} md={3}>
+          <IncomeWrapper titleSection="Expense" inputs={EXPENSE_INPUTS} />
         </Grid>
-        <Grid item spacing={3} xs={3}>
-        <IncomeWrapper titleSection = "Target" />
-          
+        <Grid item xs={12} md={3}>
+          <IncomeWrapper titleSection="Target" inputs={EXPENSE_INPUTS} />
         </Grid>
       </Grid>
-    
-
     </div>
-  )
-  }
+  );
+}
 
-
-
-export default App
+export default App;
