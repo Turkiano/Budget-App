@@ -15,9 +15,15 @@ type Income = {
 type IncomeWrapperProps = {
   titleSection: string;
   inputs: formData[];
+  incomes: any;
+  setIncomes: any;
 };
-export function IncomeWrapper({ titleSection, inputs }: IncomeWrapperProps) {
-  const [incomes, setIncomes] = useState<Income[]>([]);
+export function IncomeWrapper({
+  titleSection,
+  inputs,
+  incomes,
+  setIncomes,
+}: IncomeWrapperProps) {
   console.log(incomes);
 
   // const [source, setSource] = useState('')
@@ -87,7 +93,7 @@ export function IncomeWrapper({ titleSection, inputs }: IncomeWrapperProps) {
 
       {/* this line to print the html elements (newIncome) */}
       <ul>
-        {incomes.map((income) => {
+        {incomes.map((income: any) => {
           return (
             <li key={income.id}>
               <p>{income.source}</p>
